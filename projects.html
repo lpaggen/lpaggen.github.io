@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Leo J. Paggen — data scientist and engineer working on forecasting, reliable AI, symbolic verification, and autonomous systems.">
+  <title>Projects — Leo J. Paggen</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Projects</h1>
+    <nav>
+  <a href="index.html">Home</a>
+  <a href="about.html">About</a>
+  <a href="projects.html">Projects</a>
+  <a href="resume.pdf">Résumé</a>
+  <a href="contact.html">Contact</a>
+</nav>
+  </header>
+
+  <main>
+    <p class="intro">
+      A selection of research and engineering projects. These descriptions are
+      intentionally longer than résumé bullets and focus on the technical
+      problem, design choices, and current status.
+    </p>
+
+    <article>
+      <h2>Static Verification for PyTorch Tensor Programs</h2>
+      <p class="meta">Python · Rust · Z3 · Protocol Buffers · In development</p>
+
+      <p>
+        This project explores whether tensor-shape errors can be found before a
+        PyTorch program runs. The goal is to reason about symbolic dimensions
+        across program execution rather than checking only concrete tensor
+        values at runtime.
+      </p>
+
+      <p>
+        The frontend parses Python source and lowers its abstract syntax tree
+        into a semantic intermediate representation. Source-span information is
+        preserved so that errors can point back to the relevant expression in
+        the original program. The representation is serialized through a custom
+        Protocol Buffers schema and passed to a Rust analysis engine.
+      </p>
+
+      <p>
+        The Rust side performs cross-module import resolution and propagates
+        tensor constraints through operations using the Z3 SMT solver. A shape
+        inconsistency is reported only when the accumulated symbolic constraints
+        become unsatisfiable. This avoids rejecting programs merely because a
+        dimension is not yet known.
+      </p>
+
+      <p>
+        The project builds on an earlier compiler implementation containing a
+        lexer, parser, semantic analysis, and type checker for a custom language.
+      </p>
+    </article>
+
+    <article>
+      <h2>LLM-Assisted Maritime Autonomy Platform</h2>
+      <p class="meta">Python · C++ · MOOS-IvP · vLLM · M.Sc. thesis · In development</p>
+
+      <p>
+        My thesis investigates how language-model reasoning can be introduced
+        into an autonomous surface vessel without giving up deterministic
+        low-level control.
+      </p>
+
+      <p>
+        I developed a C++ and Python interface that streams vessel state,
+        including AIS contacts, radar information, and navigation context, into
+        an LLM reasoning pipeline. A ReAct-style navigation agent interprets
+        this state and selects COLREG-aware actions through a constrained tool
+        interface.
+      </p>
+
+      <p>
+        To improve structured command generation, I created synthetic maritime
+        navigation data in simulation and fine-tuned open-weight models,
+        including Mistral-7B and Qwen-8B. The system supports concurrent local
+        model execution through vLLM and is designed to grow into separate
+        navigation, communication, and mission-planning agents.
+      </p>
+
+      <p>
+        The central research question is not whether an LLM can steer a vessel
+        directly, but how probabilistic reasoning can be placed safely above a
+        deterministic autonomy stack.
+      </p>
+    </article>
+
+    <article>
+      <h2>Production Forecasting Research at Amazon</h2>
+      <p class="meta">Python · SQL · Amazon Redshift · Statistical forecasting</p>
+
+      <p>
+        During my internship with Amazon's QuBIT Midas team, I extended a
+        production forecasting system used for inbound fulfillment-center
+        volume planning in North America.
+      </p>
+
+      <p>
+        I owned three research initiatives covering bootstrap-based uncertainty
+        estimation, recurring-event modeling, and operational-disruption
+        modeling. The work required designing statistically distinct overlays,
+        integrating additional operational data, and evaluating changes using
+        Weighted Absolute Percentage Error.
+      </p>
+
+      <p>
+        A multiprocessing implementation accelerated large-scale bootstrap
+        inference by up to 4.7×. Separate holiday and yard-closure models reduced
+        WAPE by up to 6.8% on evaluation datasets through configurable historical
+        weighting and warehouse-specific calibration.
+      </p>
+
+      <p>
+        I documented the methodology and experiments in an internal research
+        paper and presented the recommendations to scientists and engineers.
+      </p>
+    </article>
+
+    <article>
+      <h2>EUDR Commodity Classification</h2>
+      <p class="meta">Python · Large language models · Retrieval · PwC</p>
+
+      <p>
+        I developed a proof-of-concept classification pipeline for mapping
+        product descriptions to four-digit Combined Nomenclature commodity
+        codes in support of EU Deforestation Regulation compliance.
+      </p>
+
+      <p>
+        Early experiments compared embedding-based semantic retrieval with
+        frontier language models. After evaluating their relative performance,
+        I moved to a two-stage inference design in which a second independent
+        model validated the initial classification.
+      </p>
+
+      <p>
+        The validation stage improved recall from 80% to 88% on the internal
+        evaluation set. The final work included deployment recommendations that
+        accounted for enterprise infrastructure and hardware constraints.
+      </p>
+    </article>
+
+    <article>
+      <h2>Quantum Technology Collaboration Analysis</h2>
+      <p class="meta">Python · Network science · Research manuscript under peer review</p>
+
+      <p>
+        This research studies global quantum-technology development through
+        publications, patents, funding, and collaboration networks.
+      </p>
+
+      <p>
+        I designed the collaboration analysis using more than 25,000 scientific
+        publications and 9,000 standardized institutions. A major challenge was
+        resolving inconsistent affiliation records, so I built an institution
+        canonicalization pipeline combining LLM-assisted normalization,
+        rule-based processing, and manual validation.
+      </p>
+
+      <p>
+        I then constructed weighted research graphs and applied measures
+        including betweenness centrality, Newman edge weighting, and network
+        efficiency to identify structural patterns in the international
+        research ecosystem.
+      </p>
+    </article>
+
+    <article>
+      <h2>Cisco ACIBILIZER</h2>
+      <p class="meta">Python · Ansible · Open source</p>
+
+      <p>
+        ACIBILIZER converts Cisco Application Centric Infrastructure
+        configurations into reproducible Ansible automation. The project is
+        aimed at making existing network configuration easier to inspect,
+        version, and redeploy.
+      </p>
+    </article>
+
+  </main>
+
+  <footer>
+  <p>© 2026 Leo J. Paggen</p>
+</footer>
+</body>
+</html>
