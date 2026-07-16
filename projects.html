@@ -31,31 +31,45 @@
       <p class="meta">Python · Rust · Z3 · Protocol Buffers · In development</p>
 
       <p>
-        This project explores whether tensor-shape errors can be found before a
-        PyTorch program runs. The goal is to reason about symbolic dimensions
-        across program execution rather than checking only concrete tensor
-        values at runtime.
+        This project is a static type checker for PyTorch tensor dimensions. currently
+        the project implements a basic "static linker", which I use lightly because
+        Python by design can't support a proper static linker, I had to make some
+        restrictive assumptions to make it work properly. So, the tool can resolve
+        imports across multiple files, as long as imports are strictly at the top
+        of the file, it doesn't support lazy imports yet (imports in functions...).
+        As of this commit, the tool supports only a fraction of PyTorch operations, 
+        so look at it as more of a proof-of-concept rather than the one tool to solve
+        every PyTorch problem one may encounter.
       </p>
 
       <p>
-        The frontend parses Python source and lowers its abstract syntax tree
-        into a semantic intermediate representation. Source-span information is
-        preserved so that errors can point back to the relevant expression in
-        the original program. The representation is serialized through a custom
-        Protocol Buffers schema and passed to a Rust analysis engine.
+        The tool is built in Python and Rust. I use Python because it provides me
+        with a Python parser, and "ast" module, which makes creating a richer
+        Python IR much, much faster than if done manually. Also, this guarantees
+        no semantic errors are made since I don't have to parse Python myself. Rust 
+        acts as the backend of the language, it receives the protobuf messages,
+        decodes them into a Rust IR which matches its Python counterpart exactly,
+        and does all the heavy lifting. I used Rust because I was learning it at the
+        time and its type safety is particularly suited for compiler work.
       </p>
 
       <p>
-        The Rust side performs cross-module import resolution and propagates
-        tensor constraints through operations using the Z3 SMT solver. A shape
-        inconsistency is reported only when the accumulated symbolic constraints
-        become unsatisfiable. This avoids rejecting programs merely because a
-        dimension is not yet known.
+        Rust performs cross-module import resolution and propagates tensor constraints
+        through operations using the Z3 SMT solver. A shape inconsistency is reported 
+        only when the accumulated symbolic constraints become unsatisfiable. This avoids
+        rejecting programs merely because a dimension is not yet known.
       </p>
 
       <p>
-        The project builds on an earlier compiler implementation containing a
-        lexer, parser, semantic analysis, and type checker for a custom language.
+        This project came to my mind after I spent a couple months working on a custom
+        programming language (tokenizer, parser, interpreter) in Java, (very) loosely
+        following Nydstrom's "Crafting Interpreters" book. I spoke to a professor who 
+        specializes in compilers at my faculty, and he advised me to make something
+        which I can generate metrics for if I wanted to publish my work, so I thought
+        this was a great project to do just that. A few months into the project, I
+        discovered PyTea by Jhoo et al. (2021), which my pipeline almost exactly mimics.
+        I decided to continue working on the project since it is teaching me a lot about
+        the topic. Also, this tool uses Python's annotations, which PyTea doesn't AFAIK.
       </p>
     </article>
 
@@ -181,6 +195,14 @@
         configurations into reproducible Ansible automation. The project is
         aimed at making existing network configuration easier to inspect,
         version, and redeploy.
+
+        This project was my first "professional" software development experience, 
+        I learned quite a lot about writing cleaner code, and solved a real problem
+        for the first time. The project is entirely deterministic, does not use LLMs,
+        so if you have config files, you can use this tool to convert them into playbooks.
+
+        IIRC I stopped contributing to the tool after it reached 2 out of 7 (?) supported classes.
+        Development seemingly stopped because LLMs solved this issue entirely not much after.
       </p>
     </article>
 
