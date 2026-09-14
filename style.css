@@ -91,3 +91,44 @@ footer {
   font-size: 0.88rem;
   color: #555;
 }
+
+nav a[aria-current="page"] {
+  font-weight: bold;
+}
+
+.editor-label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.python-editor {
+  border: 1px solid #999;
+  background: #fff;
+}
+
+.python-editor:focus-within {
+  outline: 2px solid #315c9b;
+  outline-offset: 2px;
+}
+
+.python-editor textarea,
+.python-editor .CodeMirror {
+  box-sizing: border-box;
+  width: 100%;
+  height: 400px;
+  height: clamp(280px, 55vh, 480px);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.python-editor > textarea {
+  display: block;
+  padding: 12px;
+  border: 0;
+  resize: vertical;
+}
+
+.python-editor .CodeMirror-lines {
+  padding: 12px 0;
+}

@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A Python code editor with live syntax highlighting.">
+  <title>Python Editor — Leo J. Paggen</title>
+  <link rel="stylesheet" href="vendor/codemirror/codemirror.css">
+  <link rel="stylesheet" href="style.css">
+  <script defer src="vendor/codemirror/codemirror.js"></script>
+  <script defer src="vendor/codemirror/python.js"></script>
+  <script defer src="editor.js"></script>
+</head>
+<body>
+  <header>
+    <h1>Python Editor</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="projects.html">Projects</a>
+      <a href="editor.html" aria-current="page">Python Editor</a>
+      <a href="resume.pdf">Resume</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <p class="intro">Static Type Checker Sanbox.</p>
+    <p>Write code in the editor and press "analyze" to run the tool.</p>
+    <label class="editor-label" for="python-code">Python code</label>
+    <div class="python-editor">
+      <textarea id="python-code" spellcheck="false" autocapitalize="off" autocomplete="off" aria-describedby="editor-help"># Try editing this example.
+def greet(name):
+    return f"Hello, {name}!"
+
+
+for number in range(3):
+    print(greet("world"), number)
+</textarea>
+    </div>
+    <p class="small" id="editor-help">Use Tab to indent and Shift+Tab to unindent. Press Escape, then Tab to leave the editor. This editor does not run code; text is cleared when you reload or leave the page.</p>
+    <noscript><p>Enable JavaScript for syntax highlighting. You can still type in the text box above.</p></noscript>
+  </main>
+
+  <footer>
+    <p>© 2026 Leo J. Paggen</p>
+  </footer>
+</body>
+</html>
