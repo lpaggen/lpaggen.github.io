@@ -10,6 +10,7 @@
   <script defer src="vendor/codemirror/codemirror.js"></script>
   <script defer src="vendor/codemirror/python.js"></script>
   <script defer src="editor.js"></script>
+  <script type="module" src="checker.js"></script>
 </head>
 <body>
   <header>
@@ -26,19 +27,32 @@
 
   <main>
     <p class="intro">Static Type Checker Sanbox.</p>
-    <p>Write code in the editor and press "analyze" to run the tool.</p>
+    <p>Write code in the editor and press "Analyze" to run the dimension checker directly in your browser.</p>
     <label class="editor-label" for="python-code">Python code</label>
     <div class="python-editor">
-      <textarea id="python-code" spellcheck="false" autocapitalize="off" autocomplete="off" aria-describedby="editor-help"># Try editing this example.
-def greet(name):
-    return f"Hello, {name}!"
+      <textarea id="python-code" spellcheck="false" autocapitalize="off" autocomplete="off" aria-describedby="editor-help">import torch
 
+def matrix_multiply(a: torch.Tensor, b: torch.Tensor):
+    return torch.matmul(a, b)
 
-for number in range(3):
-    print(greet("world"), number)
+left = torch.tensor([[1, 2, 3]])       # shape [1, 3]
+right = torch.tensor([
+    [1, 2],
+    [3, 4],
+    [5, 6],
+    [7, 8],
+    [9, 10],
+])                                      # shape [5, 2]
+
+result = matrix_multiply(left, right)   # 3 cannot equal 5
 </textarea>
     </div>
-    <p class="small" id="editor-help">Use Tab to indent and Shift+Tab to unindent. Press Escape, then Tab to leave the editor. This editor does not run code; text is cleared when you reload or leave the page.</p>
+    <div class="editor-actions">
+      <button id="analyze-python" type="button" disabled>Loading checker…</button>
+      <span id="checker-status" role="status" aria-live="polite"></span>
+    </div>
+    <section id="checker-results" class="checker-results" aria-live="polite" aria-label="Analysis results"></section>
+    <p class="small" id="editor-help">Use Tab to indent and Shift+Tab to unindent. Press Escape, then Tab to leave the editor. Code is parsed and analyzed locally; it is never executed or uploaded.</p>
     <noscript><p>Enable JavaScript for syntax highlighting. You can still type in the text box above.</p></noscript>
   </main>
 

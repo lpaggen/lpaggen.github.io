@@ -23,4 +23,5 @@ if (window.CodeMirror) {
   const editingKeys = editor.getOption("extraKeys");
   editor.on("blur", function () { editor.setOption("extraKeys", editingKeys); });
   editor.getInputField().setAttribute("aria-describedby", "editor-help");
+  window.pythonEditor = editor;
 }
