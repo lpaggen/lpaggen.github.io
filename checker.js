@@ -22,7 +22,9 @@ import micropip
 await micropip.install("protobuf==7.35.1")
   `);
 
-  const response = await fetch("./checker/frontend.zip");
+  // Version the generated archive URL so GitHub Pages and the browser cannot
+  // reuse a stale Python frontend after a deployment.
+  const response = await fetch("./checker/frontend.zip?v=d56363b");
   if (!response.ok) {
     throw new Error(`frontend download failed (${response.status})`);
   }
