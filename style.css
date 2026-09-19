@@ -182,6 +182,8 @@ nav a[aria-current="page"] {
 
 .checker-diagnostic span {
   margin-top: 2px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  white-space: pre-wrap;
 }
 
 .checker-diagnostic:hover,
