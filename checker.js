@@ -1,5 +1,5 @@
 import { loadPyodide } from "https://cdn.jsdelivr.net/pyodide/v0.28.3/full/pyodide.mjs";
-import initChecker, { analyze_ir } from "./checker/pkg/pdc_rust_check.js?v=matmul-diag-1";
+import initChecker, { analyze_ir } from "./checker/pkg/pdc_rust_check.js?v=readable-guards-1";
 
 const button = document.querySelector("#analyze-python");
 const status = document.querySelector("#checker-status");
@@ -12,7 +12,7 @@ globalThis.pdcSolveSmt2 = () => "unknown";
 let buildIr;
 
 async function initializeChecker() {
-  const wasm = await fetch("./checker/pkg/pdc_rust_check_bg.wasm?v=matmul-diag-1");
+  const wasm = await fetch("./checker/pkg/pdc_rust_check_bg.wasm?v=readable-guards-1");
   await initChecker({ module_or_path: wasm });
 
   status.textContent = "Loading Python frontend…";
