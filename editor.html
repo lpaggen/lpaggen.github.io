@@ -14,7 +14,7 @@
 </head>
 <body>
   <header>
-    <h1>Python Editor</h1>
+    <h1>FlowUnion Type Checker (early development build)</h1>
     <nav>
       <a href="index.html">Home</a>
       <a href="about.html">About</a>
@@ -26,9 +26,8 @@
   </header>
 
   <main>
-    <p class="intro">Static Type Checker Sanbox.</p>
-    <p>Write code in the editor and press "Analyze" to run the dimension checker directly in your browser.</p>
-    <label class="editor-label" for="python-code">Python code</label>
+    <p class="intro">This is a custom type checker meant to catch tensor-shape errors.</p>
+    <p>Write code in the editor and press "Analyze" to run the tool, diagnostics will appear below the editor (you can click on them!). A couple things to note before you press "analyze": write correct Python code, this means correct imports, all variables you use must be defined, otherwise you will run into undefined behavior.</p>
     <div class="python-editor">
       <textarea id="python-code" spellcheck="false" autocapitalize="off" autocomplete="off" aria-describedby="editor-help">import torch
 
@@ -52,8 +51,8 @@ result = matrix_multiply(left, right)   # 3 cannot equal 5
       <span id="checker-status" role="status" aria-live="polite"></span>
     </div>
     <section id="checker-results" class="checker-results" aria-live="polite" aria-label="Analysis results"></section>
-    <p class="small" id="editor-help">Use Tab to indent and Shift+Tab to unindent. Press Escape, then Tab to leave the editor. Code is parsed and analyzed locally; it is never executed or uploaded.</p>
-    <noscript><p>Enable JavaScript for syntax highlighting. You can still type in the text box above.</p></noscript>
+    <p class="small" id="editor-help">Click here to access the currently supported subset of Python. Want to see how it works? This short technical report explains how the tool works under the hood.</p>
+    <noscript><p>Enable JavaScript for syntax highlighting.</p></noscript>
   </main>
 
   <footer>
