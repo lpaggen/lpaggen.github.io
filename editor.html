@@ -29,21 +29,221 @@
     <p class="intro">This is a custom type checker meant to catch tensor-shape errors.</p>
     <p>Write code in the editor and press "Analyze" to run the tool, diagnostics will appear below the editor (you can click on them!). A couple things to note before you press "analyze": write correct Python code, this means correct imports, all variables you use must be defined, otherwise you will run into undefined behavior.</p>
     <div class="python-editor">
-      <textarea id="python-code" spellcheck="false" autocapitalize="off" autocomplete="off" aria-describedby="editor-help">import torch
+      <textarea id="python-code" spellcheck="false" autocapitalize="off" autocomplete="off" aria-describedby="editor-help">
+import torch
 
-def matrix_multiply(a: torch.Tensor, b: torch.Tensor):
-    return torch.matmul(a, b)
+# ------------------------------------------------------------
+# FlowUnion demo (YOU CAN SCROLL DOWN)
+#
+# Current features shown here:
+# - Python primitive type checking
+# - Tensor construction
+# - Tensor shape tracking
+# - torch.matmul shape checking
+# - Type annotations
+# - User-defined functions
+# - Chained / nested function calls
+# - Call-site specialization
+# - Conditional control flow
+# - Branch-sensitive tensor shapes
+# - Errors that occur only on specific branches
+# ------------------------------------------------------------
 
-left = torch.tensor([[1, 2, 3]])       # shape [1, 3]
-right = torch.tensor([
+
+# Type annotations are supported.
+# A generic torch.Tensor annotation does not fix the shape itself;
+# concrete argument shapes can still be recovered at call sites.
+def project(x: torch.Tensor, w: torch.Tensor):
+    return torch.matmul(x, w)
+
+
+# Annotations are optional.
+# FlowUnion can specialize this function from the concrete types
+# supplied by its callers.
+def chain(x, w1, w2):
+    first = project(x, w1)
+    return project(first, w2)
+
+
+# ------------------------------------------------------------
+# Interprocedural tensor analysis
+# ------------------------------------------------------------
+
+x = torch.tensor([
+    [1, 2, 3],
+])  # shape: [1, 3]
+
+w1 = torch.tensor([
     [1, 2],
     [3, 4],
     [5, 6],
-    [7, 8],
-    [9, 10],
-])                                      # shape [5, 2]
+])  # shape: [3, 2]
 
-result = matrix_multiply(left, right)   # 3 cannot equal 5
+# project(x, w1):
+#
+#     [1,3] @ [3,2]
+#          -> [1,2]
+#
+# Therefore the second weight must have first dimension 2.
+w2_bad = torch.tensor([
+    [1],
+    [2],
+    [3],
+])  # shape: [3, 1]
+
+# FlowUnion follows:
+#
+#     chain(...)
+#       -> project(x, w1)
+#       -> project(first, w2_bad)
+#       -> torch.matmul(...)
+#
+# and detects:
+#
+#     [1,2] @ [3,1]
+#          2 != 3
+#
+result = chain(x, w1, w2_bad)
+
+
+# ------------------------------------------------------------
+# Primitive type checking
+# ------------------------------------------------------------
+
+count: int = 10       # OK
+ratio: float = 54.3   # OK
+
+bad_count: int = 54.3
+# ERROR:
+# expected int, got float
+
+
+# ------------------------------------------------------------
+# Branch-sensitive tensor analysis
+# ------------------------------------------------------------
+
+flag = True
+
+if flag:
+    branch_x = torch.tensor([
+        [1, 2, 3],
+    ])  # shape: [1, 3]
+
+    branch_w = torch.tensor([
+        [1, 2],
+        [3, 4],
+        [5, 6],
+    ])  # shape: [3, 2]
+
+else:
+    branch_x = torch.tensor([
+        [1, 2],
+    ])  # shape: [1, 2]
+
+    branch_w = torch.tensor([
+        [1, 2],
+        [3, 4],
+    ])  # shape: [2, 2]
+
+
+# Both branches are individually valid:
+#
+# flag:
+#     [1,3] @ [3,2] -> [1,2]
+#
+# not flag:
+#     [1,2] @ [2,2] -> [1,2]
+#
+# FlowUnion keeps the branch-conditioned alternatives associated
+# with their guards across the CFG join instead of treating the
+# shapes as unrelated ordinary unions.
+branch_result = torch.matmul(branch_x, branch_w)
+
+
+# ------------------------------------------------------------
+# Error on only one branch
+# ------------------------------------------------------------
+
+if flag:
+    guarded_x = torch.tensor([
+        [1, 2, 3],
+    ])  # [1,3]
+
+    guarded_w = torch.tensor([
+        [1, 2],
+        [3, 4],
+        [5, 6],
+    ])  # [3,2]
+
+else:
+    guarded_x = torch.tensor([
+        [1, 2],
+    ])  # [1,2]
+
+    guarded_w = torch.tensor([
+        [1, 2],
+        [3, 4],
+        [5, 6],
+    ])  # [3,2]
+
+
+# The true branch is valid:
+#
+#     [1,3] @ [3,2]
+#
+# The false branch is invalid:
+#
+#     [1,2] @ [3,2]
+#          2 != 3
+#
+# FlowUnion can therefore associate the error with the branch
+# under which the mismatch is feasible.
+guarded_result = torch.matmul(guarded_x, guarded_w)
+
+
+# ------------------------------------------------------------
+# Nested conditional guards
+# ------------------------------------------------------------
+
+a = True
+b = False
+
+if a:
+    if b:
+        nested_x = torch.tensor([
+            [1, 2, 3],
+        ])  # [1,3]
+    else:
+        nested_x = torch.tensor([
+            [1, 2],
+        ])  # [1,2]
+else:
+    nested_x = torch.tensor([
+        [1, 2, 3, 4],
+    ])  # [1,4]
+
+
+nested_w = torch.tensor([
+    [1, 2],
+    [3, 4],
+    [5, 6],
+])  # [3,2]
+
+
+# Conceptually, FlowUnion retains alternatives such as:
+#
+#     a and b       -> Tensor[1,3]
+#     a and not b   -> Tensor[1,2]
+#     not a         -> Tensor[1,4]
+#
+# The matmul check is then performed under each feasible guard.
+#
+# Only:
+#
+#     a and b
+#
+# satisfies the required inner dimension 3.
+nested_result = torch.matmul(nested_x, nested_w)
 </textarea>
     </div>
     <div class="editor-actions">
