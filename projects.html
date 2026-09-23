@@ -44,6 +44,15 @@
       </p>
 
       <p>
+        The current checker handles branch-sensitive control flow, user-defined
+        function specialization, tensor construction and shape propagation, and
+        common arithmetic operators such as addition, subtraction, and true
+        division. The accepted Python subset is intentionally explicit: classes,
+        loops, unsupported operators, and unsupported keyword arguments produce
+        source-located diagnostics rather than being silently skipped.
+      </p>
+
+      <p>
         The tool is built in Python and Rust. I use Python because it provides me
         with a Python parser, and "ast" module, which makes creating a richer
         Python IR much, much faster than if done manually. Also, this guarantees

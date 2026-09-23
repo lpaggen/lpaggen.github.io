@@ -47,6 +47,7 @@ import torch
 # - Conditional control flow
 # - Branch-sensitive tensor shapes
 # - Errors that occur only on specific branches
+# - Scalar and same-shape tensor +, -, and / operators
 # ------------------------------------------------------------
 
 
@@ -251,7 +252,7 @@ nested_result = torch.matmul(nested_x, nested_w)
       <span id="checker-status" role="status" aria-live="polite"></span>
     </div>
     <section id="checker-results" class="checker-results" aria-live="polite" aria-label="Analysis results"></section>
-    <p class="small" id="editor-help">Click here to access the currently supported subset of Python. Want to see how it works? This short technical report explains how the tool works under the hood.</p>
+    <p class="small" id="editor-help">The checker supports a deliberately restricted Python subset. Unsupported constructs—including classes, loops, unsupported operators, and unsupported keyword arguments—are reported as source diagnostics instead of being silently ignored. Want to see how it works? This short technical report explains how the tool works under the hood.</p>
     <noscript><p>Enable JavaScript for syntax highlighting.</p></noscript>
   </main>
 
