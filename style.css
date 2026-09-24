@@ -60,6 +60,14 @@ article {
   padding-left: 20px;
 }
 
+.paper-list {
+  padding-left: 22px;
+}
+
+.paper-list li {
+  margin-bottom: 14px;
+}
+
 footer {
   margin-top: 72px;
   padding-top: 14px;
