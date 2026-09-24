@@ -101,6 +101,14 @@ nav a[aria-current="page"] {
   margin-bottom: 8px;
 }
 
+.editor-resources {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  margin: -8px 0 24px;
+  font-size: 0.95rem;
+}
+
 .python-editor {
   border: 1px solid #999;
   background: #fff;
