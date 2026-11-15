@@ -212,3 +212,24 @@ nav a[aria-current="page"] {
   border-left: 4px solid #317047;
   background: #effaf2;
 }
+
+.known-limitations {
+  margin-top: 28px;
+  padding: 14px 18px;
+  border-left: 4px solid #b07818;
+  background: #fff8e8;
+}
+
+.known-limitations h2 {
+  margin: 0 0 8px;
+  font-size: 1.1rem;
+}
+
+.known-limitations p {
+  margin: 0 0 8px;
+}
+
+.known-limitations ul {
+  margin: 0;
+  padding-left: 22px;
+}

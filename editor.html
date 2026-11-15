@@ -32,7 +32,7 @@
       <a href="flowunions.pdf" target="_blank" rel="noopener">Technical Report</a>
       <a href="https://github.com/lpaggen/Python-Dimension-Static-Type-Checker" target="_blank" rel="noopener">GitHub repository</a>
     </p>
-    <p>Write code in the editor and press "Analyze" to run the tool, diagnostics will appear below the editor (you can click on them!). A couple things to note before you press "analyze": write correct Python code, this means correct imports, all variables you use must be defined, otherwise you will run into undefined behavior.</p>
+    <p>Write code in the editor and press "Analyze" to run the tool. Diagnostics appear below the editor and can be clicked to jump to the relevant code.</p>
     <div class="python-editor">
       <textarea id="python-code" spellcheck="false" autocapitalize="off" autocomplete="off" aria-describedby="editor-help">
 import torch
@@ -257,7 +257,18 @@ nested_result = torch.matmul(nested_x, nested_w)
       <span id="checker-status" role="status" aria-live="polite"></span>
     </div>
     <section id="checker-results" class="checker-results" aria-live="polite" aria-label="Analysis results"></section>
-    <p class="small" id="editor-help">The checker supports a deliberately restricted Python subset. Unsupported constructs include classes, loops, unsupported operators, and unsupported keyword arguments.</p>
+    <section class="known-limitations" aria-labelledby="known-limitations-heading">
+      <h2 id="known-limitations-heading">Known limitations</h2>
+      <p id="editor-help">This is an early development build and supports a deliberately restricted subset of Python.</p>
+      <ul>
+        <li>Input must be valid Python, including valid imports.</li>
+        <li>Variables must be defined before they are used; undefined names can produce unreliable results.</li>
+        <li>Classes, loops, some operators, and some keyword arguments are not yet supported.</li>
+        <li>Currently, reassigning variables to one another won't work. This is becasue I made the mistake of letting variable
+            names idenfity them. This should be fixed in a future build. Specifically I mean something like: in a function which takes
+        two boolean arguments "a" and "b", if you do: "a = b" at some point, the analyzer will not work properly.</li>
+      </ul>
+    </section>
     <noscript><p>Enable JavaScript for syntax highlighting.</p></noscript>
   </main>
 
